@@ -11,13 +11,13 @@ import java.io.IOException;
 /**
  * Created by luore on 2016/9/4.
  */
-public class DiskCache {
+public class DiskCache implements ImageCache{
     private String cacheDir="sdcard/MyImageLoader/cache";
-
+    @Override
     public Bitmap get(String url){
         return BitmapFactory.decodeFile(cacheDir+url);
     }
-
+    @Override
     public void put(String url,Bitmap bitmap){
         FileOutputStream fileOutputStream=null;
 

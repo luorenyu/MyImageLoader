@@ -22,8 +22,7 @@ public class MainActivity extends AppCompatActivity {
         ImageLoader loader=new ImageLoader();
 //        String url="http://jiangsu.china.com.cn/uploadfile/2016/0608/1465351643173155.jpg";
         String url="http://www.yqdown.com/img2015/9/18/2015091839647893.jpg";
-        loader.useDoubleCache(true);
-        loader.useDiskCache(false);
+        loader.setImageCache(new DoubleCache());
         loader.displayImage(url,iv_image);
     }
 }

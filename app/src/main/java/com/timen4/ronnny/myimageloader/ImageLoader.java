@@ -17,14 +17,10 @@ import java.util.concurrent.Executors;
 public class ImageLoader {
 
     //内存缓存
-    ImageCache mMemoryCache=new ImageCache();
-    //SD卡缓存
-    DiskCache mDiskCache=new DiskCache();
-    //双缓存
-    DoubleCache mDoubleCache =new DoubleCache();
+    ImageCache imageCache ;
 
-    private Boolean useDiskCache=false;
-    private Boolean useDoubleCache=false;
+
+
 
     //线程池，线程池数量为cpu数
     private ExecutorService mExecutorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
@@ -33,14 +29,7 @@ public class ImageLoader {
     public void displayImage(final String url, final ImageView imageView){
         imageView.setTag(url);
         Bitmap cacheBitmap =null;
-        if (useDoubleCache){
-            cacheBitmap=mDoubleCache.get(url);
-        }else if (useDiskCache){
-            cacheBitmap=mDiskCache.get(url);
-        }else{
-            cacheBitmap=mMemoryCache.get(url);
-        }
-
+        cacheBitmap= imageCache.get(url);
 
         if (cacheBitmap!=null){
             imageView.setImageBitmap(cacheBitmap);
@@ -57,13 +46,7 @@ public class ImageLoader {
                 if (imageView.getTag().equals(url)){
                     imageView.setImageBitmap(bitmap);
                 }
-                if(useDoubleCache){
-                    mDoubleCache.put(url,bitmap);
-                }else if(useDiskCache){
-                    mDiskCache.put(url,bitmap);
-                }else{
-                    mMemoryCache.put(url,bitmap);
-                }
+                imageCache.put(url,bitmap);
             }
         });
 
@@ -82,11 +65,7 @@ public class ImageLoader {
         return bitmap;
     }
 
-    public void useDiskCache(Boolean useDiskeCache){
-        this.useDiskCache = useDiskeCache;
-    }
-
-    public void useDoubleCache(Boolean useDoubleCache){
-        this.useDoubleCache = useDoubleCache;
+    public void setImageCache(ImageCache imageCache){
+        this.imageCache=imageCache;
     }
 }
